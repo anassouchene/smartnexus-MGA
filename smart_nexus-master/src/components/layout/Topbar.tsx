@@ -1,7 +1,9 @@
+import LogoutIcon from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import { AppBar, Avatar, Box, IconButton, Toolbar, Typography } from '@mui/material';
+import { AppBar, Avatar, Box, IconButton, Toolbar, Tooltip, Typography } from '@mui/material';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
 interface TopbarProps {
@@ -10,7 +12,13 @@ interface TopbarProps {
 }
 
 const Topbar: React.FC<TopbarProps> = ({ onSidebarOpen, onSidebarCollapse }) => {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
 
   return (
     <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
@@ -52,6 +60,11 @@ const Topbar: React.FC<TopbarProps> = ({ onSidebarOpen, onSidebarCollapse }) => 
               {user?.name.charAt(0)}
             </Avatar>
           </Box>
+          <Tooltip title="Se déconnecter">
+            <IconButton onClick={handleLogout} color="inherit">
+              <LogoutIcon />
+            </IconButton>
+          </Tooltip>
         </Box>
       </Toolbar>
     </AppBar>

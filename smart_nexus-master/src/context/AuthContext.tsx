@@ -10,7 +10,7 @@ interface User {
 interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
-  login: () => void;
+  login: (email: string, password: string) => boolean;
   logout: () => void;
 }
 
@@ -18,16 +18,20 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const MOCK_USER: User = {
   id: '1',
-  name: 'John Doe',
-  email: 'john.doe@smartnexus.com',
+  name: 'Mr. Anas Khatim',
+  email: 'anas.khatim@smartnexus.com',
   role: 'MGA',
 };
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(MOCK_USER); // Default logged in for dev
+  const [user, setUser] = useState<User | null>(null);
 
-  const login = () => {
-    setUser(MOCK_USER);
+  const login = (email: string, password: string) => {
+    if (email === 'anas.khatim@smartnexus.com' && password === 'Admin@123') {
+      setUser(MOCK_USER);
+      return true;
+    }
+    return false;
   };
 
   const logout = () => {
